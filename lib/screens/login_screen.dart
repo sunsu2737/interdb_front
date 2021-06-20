@@ -54,22 +54,22 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 30),
             FormBuilder(
               key: _fbKey,
-              autovalidate: _autovalidate,
+
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Column(
                   children: <Widget>[
                     FormBuilderTextField(
-                      attribute: 'email',
+
                       decoration: InputDecoration(
-                        labelText: 'Email',
+                        labelText: 'ID',
                         prefixIcon: Icon(Icons.email),
                         filled: true,
                         border: OutlineInputBorder(),
                       ),
                       validators: [
                         FormBuilderValidators.required(),
-                        FormBuilderValidators.email(),
+
                       ],
                     ),
                     SizedBox(height: 30),
@@ -83,8 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       validators: [
                         FormBuilderValidators.required(),
-                        FormBuilderValidators.minLength(6),
-                        FormBuilderValidators.maxLength(20),
+
                       ],
                       obscureText: true,
                       maxLines: 1,

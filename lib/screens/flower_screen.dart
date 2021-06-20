@@ -18,34 +18,34 @@ class _FlowerScreenState extends State<FlowerScreen> {
   var pixabayProvider;
 
   @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero).then((_) async {
-      pixabayProvider = Provider.of<PixabayPhotos>(context);
-      await pixabayProvider.getPixabayPhotos(page, 20);
-      photos = pixabayProvider.photos;
-    }).catchError((error) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text(
-              'Fail to fetch images from pixabay, check your url or try later!',
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        },
-      );
-    });
-  }
+  // void initState() {
+  //   super.initState();
+  //   Future.delayed(Duration.zero).then((_) async {
+  //     pixabayProvider = Provider.of<PixabayPhotos>(context);
+  //     await pixabayProvider.getPixabayPhotos(page, 20);
+  //     photos = pixabayProvider.photos;
+  //   }).catchError((error) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           title: Text('Error'),
+  //           content: Text(
+  //             'Fail to fetch images from pixabay, check your url or try later!',
+  //           ),
+  //           actions: <Widget>[
+  //             FlatButton(
+  //               child: Text('OK'),
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //             )
+  //           ],
+  //         );
+  //       },
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -55,47 +55,92 @@ class _FlowerScreenState extends State<FlowerScreen> {
       appBar: AppBar(
         title: Text('Flowers'),
       ),
-      body: SafeArea(
-        child: pixabayProvider == null
-            ? Center(child: CircularProgressIndicator())
-            : GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-                  childAspectRatio: 3 / 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: photos.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) {
-                          return ImageDetail(photos[index]);
-                        }),
-                      );
-                    },
-                    child: GridTile(
-                      child: FadeInImage(
-                        placeholder:
-                            AssetImage('assets/images/placeholder.png'),
-                        image: NetworkImage(photos[index].webformatURL),
-                        fit: BoxFit.cover,
-                      ),
-                      footer: GridTileBar(
-                        backgroundColor: photos[index].viewed
-                            ? Colors.blue[300].withOpacity(0.7)
-                            : Colors.black54,
-                        title: Text(photos[index].user),
-                        subtitle: Text(
-                          'views: ${photos[index].views}, favs: ${photos[index].favorites}',
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
+      body: DataTable(
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              'Name',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Age',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Role',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ],
+        rows: const <DataRow>[
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Sarah')),
+              DataCell(Text('19')),
+              DataCell(Text('Student')),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Janine')),
+              DataCell(Text('43')),
+              DataCell(Text('Professor')),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('William')),
+              DataCell(Text('27')),
+              DataCell(Text('Associate Professor')),
+            ],
+          ),
+        ],
       ),
+      // body: SafeArea(
+      //   child: pixabayProvider == null
+      //       ? Center(child: CircularProgressIndicator())
+      //       : GridView.builder(
+      //           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      //             crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+      //             childAspectRatio: 3 / 2,
+      //             crossAxisSpacing: 10,
+      //             mainAxisSpacing: 10,
+      //           ),
+      //           itemCount: photos.length,
+      //           itemBuilder: (context, index) {
+      //             return InkWell(
+      //               onTap: () {
+      //                 Navigator.of(context).push(
+      //                   MaterialPageRoute(builder: (ctx) {
+      //                     return ImageDetail(photos[index]);
+      //                   }),
+      //                 );
+      //               },
+      //               child: GridTile(
+      //                 child: FadeInImage(
+      //                   placeholder:
+      //                       AssetImage('assets/images/placeholder.png'),
+      //                   image: NetworkImage(photos[index].webformatURL),
+      //                   fit: BoxFit.cover,
+      //                 ),
+      //                 footer: GridTileBar(
+      //                   backgroundColor: photos[index].viewed
+      //                       ? Colors.blue[300].withOpacity(0.7)
+      //                       : Colors.black54,
+      //                   title: Text(photos[index].user),
+      //                   subtitle: Text(
+      //                     'views: ${photos[index].views}, favs: ${photos[index].favorites}',
+      //                   ),
+      //                 ),
+      //               ),
+      //             );
+      //           },
+      //         ),
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           page++;
